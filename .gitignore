@@ -4,3 +4,4 @@ mydjangoenv/
 .pyc
 _pycache_/
 local_settings.py
+.xml

@@ -5,3 +5,4 @@ mydjangoenv/
 _pycache_/
 local_settings.py
 .xml
+.idea/

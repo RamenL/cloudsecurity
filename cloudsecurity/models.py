@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class FileDetails(models.Model):
     owner = models.CharField(max_length=200)
-    file_name = models.CharField(max_length=200)
+    file_name = models.CharField(max_length=2000)
     file_type = models.CharField(max_length=7)
     head_id = models.IntegerField()
     head_table = models.IntegerField()

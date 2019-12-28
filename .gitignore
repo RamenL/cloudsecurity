@@ -1,0 +1,6 @@
+mydjangoenv/
+.log
+.pot
+.pyc
+_pycache_/
+local_settings.py

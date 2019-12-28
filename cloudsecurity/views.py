@@ -32,12 +32,6 @@ def process_file(file):
         chunk_stack.append(binary_chunk)
     id = 0
     table = 0
-    temp = chunk_stack.pop()
-    # print(temp)
-    # print(type(temp))
-    # print(type(temp[0]))
-    # ary = np.asarray(temp)
-    # print(type(ary))
     while chunk_stack:
         current = np.asarray(chunk_stack.pop())
         seed(1)

@@ -7,6 +7,7 @@ from random import randint
 from random import seed
 from io import BytesIO
 import numpy as np
+import queue
 
 NUMBER_OF_RESOURCES = 4
 
@@ -39,11 +40,11 @@ def process_file(file):
         entry = None
         if(random_int == 1):
             entry = FilePartitionOne(byte_array=current, next_id = id, next_table = table)
-        if (random_int == 2):
+        elif (random_int == 2):
             entry = FilePartitionTwo(byte_array=current, next_id=id, next_table=table)
-        if (random_int == 3):
+        elif (random_int == 3):
             entry = FilePartitionThree(byte_array=current, next_id=id, next_table=table)
-        if (random_int == 4):
+        elif (random_int == 4):
             entry = FilePartitionFour(byte_array=current, next_id=id, next_table=table)
         if(entry == None):
             break #something went wrong
@@ -53,12 +54,30 @@ def process_file(file):
             table = random_int
     FileDetails(owner="get from session", file_name = file.name, file_type = "later", head_id = id, head_table = table).save()
 
-# def detail(request, question_id):
-#     try:
-#         question = Question.objects.get(pk=question_id)
-#     except Question.DoesNotExist:
-#         raise Http404("Question does not exist")
-#     return render(request, 'polls/detail.html', {'question': question})
+def select_table(id, table):
+    if(table == 1):
+        return FilePartitionOne.objects.get(pk=id)
+    elif (table == 2):
+        return FilePartitionTwo.objects.get(pk=id)
+    elif (table == 3):
+        return FilePartitionThree.objects.get(pk=id)
+    elif (table == 4):
+        return FilePartitionFour.objects.get(pk=id)
 
 def download(request, filedetails_id):
-    return HttpResponse(filedetails_id)
+    try:
+        filedetail = FileDetails.objects.get(pk=filedetails_id)
+    except FileDetails.DoesNotExist:
+        raise Http404("File does not exist")
+    chunk_queue = []
+    id = filedetail.head_id
+    table = filedetail.head_table
+    while id != 0 and table != 0:
+        current = select_table(id, table)
+        chunk_queue.append(current.byte_array)
+        id = current.next_id
+        table = current.next_table
+    #put it together
+    #new_name = filedetail.file_name + "download"
+    #f = open(new_name, 'wb')
+    return HttpResponse("hi")

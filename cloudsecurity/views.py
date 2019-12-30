@@ -11,7 +11,7 @@ import numpy as np
 NUMBER_OF_RESOURCES = 4
 
 def index(request):
-    file_list = FileDetails.objects
+    file_list = FileDetails.objects.all()
     context = {'file_list': file_list }
     return render(request, 'cloudsecurity/index.html', context)
 
@@ -59,3 +59,6 @@ def process_file(file):
 #     except Question.DoesNotExist:
 #         raise Http404("Question does not exist")
 #     return render(request, 'polls/detail.html', {'question': question})
+
+def download(request, filedetails_id):
+    return HttpResponse(filedetails_id)
